@@ -8,9 +8,9 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 @SpringBootApplication
 @EnableJpaRepositories(basePackages = "com.carlease.customer")
 @EntityScan("com.carlease.customer")
-public class CustomerApiApplication {
+public class CustomerServiceApplication {
 
   public static void main(String[] args) {
-    SpringApplication.run(CustomerApiApplication.class, args);
+    SpringApplication.run(CustomerServiceApplication.class, args);
   }
 }

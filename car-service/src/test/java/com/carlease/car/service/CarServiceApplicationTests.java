@@ -1,10 +1,10 @@
-package com.carlease.customer.service;
+package com.carlease.car.service;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
 
 @SpringBootTest
-class CustomerApiApplicationTests {
+class CarServiceApplicationTests {
 
   @Test
   void contextLoads() {
