@@ -19,7 +19,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import org.springframework.web.util.UriComponentsBuilder;
 
 @RestController
-@RequestMapping("/customers")
+@RequestMapping("/api/customers")
 @ComponentScan("com.carlease.customer")
 public class CustomerController {
 

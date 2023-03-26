@@ -1,0 +1,28 @@
+version: '3.3'
+services:
+  traefik:
+    image: traefik:v2.9
+    container_name: traefik
+    command:
+      - --api.insecure=true
+      - --providers.docker=true
+      - --providers.docker.exposedbydefault=false
+      - --entrypoints.web.address=:80
+    ports:
+      - "80:80"
+      - "8080:8080"
+    volumes:
+      - "/var/run/docker.sock:/var/run/docker.sock:ro"
+
+  carlease-customer-api:
+    build:
+      context: ./customer-api
+    restart: always
+    container_name: carlease-customer-api
+#    ports:
+#      - "8081:8080"
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.carlease-customer-api.rule=Host(`localhost`) && PathPrefix(`/api/customers`)"
+      - "traefik.http.services.carlease-customer-api.loadbalancer.server.port=8080"
+      - "traefik.http.routers.carlease-customer-api.entrypoints=web"

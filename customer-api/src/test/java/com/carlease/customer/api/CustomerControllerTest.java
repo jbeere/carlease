@@ -33,7 +33,7 @@ public class CustomerControllerTest {
     when(repo.save(any(Customer.class))).thenReturn(customer);
     when(repo.findById(random)).thenReturn(Optional.of(customer));
     this.mockMvc.perform(
-            post("/customers/").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"x\"}"))
+            post("/api/customers/").contentType(MediaType.APPLICATION_JSON).content("{\"name\":\"x\"}"))
         .andDo((result) -> {
           String location = result.getResponse().getHeader("Location");
           Assertions.assertNotNull(location);
