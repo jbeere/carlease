@@ -1,18 +1,28 @@
 package com.carlease.lease.service;
 
+import com.carlease.car.service.dto.CarDTO;
+import com.carlease.lease.service.client.CarServiceClient;
 import com.carlease.lease.service.dto.LeaseCalculationRequest;
 import com.carlease.lease.service.dto.LeaseCalculationResponse;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.Optional;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 @Service
 public class LeaseServiceImpl implements LeaseService {
 
+  @Autowired
+  private CarServiceClient carServiceClient;
+
   @Override
   public LeaseCalculationResponse calculate(String make, String model,
       LeaseCalculationRequest request) {
-    BigDecimal nettPrice = new BigDecimal(200000); // todo fetch from cars
+    Optional<CarDTO> car = carServiceClient.getCar(make, model);
+    BigDecimal nettPrice = car.map(CarDTO::getNettPrice)
+        .orElseThrow(() -> new IllegalArgumentException(
+            String.format("Make %s Model + %s", make, model)));
     BigDecimal twelve = new BigDecimal(12);
     BigDecimal hundred = new BigDecimal(100);
     BigDecimal mileage = request.getMileage();
