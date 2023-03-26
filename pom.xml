@@ -19,6 +19,7 @@
     <module>car-service</module>
     <module>lease-service</module>
     <module>discovery-server</module>
+    <module>api-gateway</module>
   </modules>
 
   <dependencyManagement>

@@ -4,4 +4,4 @@ curl -H "Content-Type: application/json" -d "{ \
   \"mileage\":30, \
   \"duration\":1, \
   \"interestRate\": 14.5 \
-}" http://localhost/lease/api/lease/car/BMW/XM/rate
+}" http://localhost:8080/lease/api/lease/car/BMW/XM/rate

@@ -8,4 +8,4 @@ curl -H "Content-Type: application/json" -d "{ \
   \"place\":\"London\", \
   \"zipCode\":\"NW1 6XE\", \
   \"phoneNumber\":\"555-1234\" \
-}" http://localhost/customer/api/customers/
+}" http://localhost:8080/customer/api/customers/

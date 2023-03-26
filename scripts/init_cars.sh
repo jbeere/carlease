@@ -8,4 +8,4 @@ curl -H "Content-Type: application/json" -d "{ \
   \"co2Emissions\":90.0, \
   \"grossPrice\":150000, \
   \"nettPrice\":200000 \
-}" http://localhost/car/api/cars/
+}" http://localhost:8080/car/api/cars/

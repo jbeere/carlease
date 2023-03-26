@@ -16,7 +16,7 @@ public class CarServiceClient {
   private WebClient.Builder webClient;
 
   public Optional<CarDTO> getCar(String make, String model) {
-    ResponseEntity<List<CarDTO>> response = webClient.baseUrl("http://car-service:8080/car/api")
+    ResponseEntity<List<CarDTO>> response = webClient.baseUrl("http://car-service/car/api")
         .build()
         .get()
         .uri(b -> b.path("/cars/").queryParam("make", make).queryParam("model", model).build())
