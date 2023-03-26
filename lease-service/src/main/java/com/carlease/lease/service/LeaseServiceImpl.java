@@ -22,7 +22,7 @@ public class LeaseServiceImpl implements LeaseService {
     Optional<CarDTO> car = carServiceClient.getCar(make, model);
     BigDecimal nettPrice = car.map(CarDTO::getNettPrice)
         .orElseThrow(() -> new IllegalArgumentException(
-            String.format("Make %s Model + %s", make, model)));
+            String.format("Make %s Model %s Not Found", make, model)));
     BigDecimal twelve = new BigDecimal(12);
     BigDecimal hundred = new BigDecimal(100);
     BigDecimal mileage = request.getMileage();
