@@ -19,8 +19,6 @@ services:
       context: ./customer-api
     restart: always
     container_name: carlease-customer-api
-#    ports:
-#      - "8081:8080"
     labels:
       - "traefik.enable=true"
       - "traefik.http.routers.carlease-customer-api.rule=Host(`localhost`) && PathPrefix(`/api/customers`)"
