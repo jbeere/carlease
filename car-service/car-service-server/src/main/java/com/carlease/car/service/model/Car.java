@@ -39,6 +39,6 @@ public class Car {
   @Column(name="gross_price")
   private BigDecimal grossPrice;
 
-  @Column(name="nett_proce")
+  @Column(name="nett_price")
   private BigDecimal nettPrice;
 }

@@ -24,11 +24,11 @@ public class CarServiceClient {
         .retrieve()
         .toEntityList(CarDTO.class).block();
     if (response == null) {
-      throw new IllegalArgumentException("N");
+      throw new IllegalStateException("Web Client Response from car-service was null");
     }
     List<CarDTO> cars = response.getBody();
     if (cars == null) {
-      throw new IllegalArgumentException("NNN");
+      throw new IllegalArgumentException("Web Client Response body was null");
     }
     if (cars.isEmpty()) {
       return Optional.empty();
