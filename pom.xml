@@ -12,6 +12,7 @@
   <modules>
     <module>customer-service</module>
     <module>car-service</module>
+    <module>lease-service</module>
   </modules>
 
 </project>
