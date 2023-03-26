@@ -27,26 +27,30 @@ services:
     volumes:
       - db:/var/lib/mysql
 
-  carlease-customer-api:
+  carlease-customer-service:
     build:
-      context: ./customer-api
+      context: ./customer-service
     depends_on:
         - mysqldb
     restart: always
-    container_name: carlease-customer-api
+    container_name: carlease-customer-service
+    ports:
+      - "8081:8080"
     environment:
       SPRING_APPLICATION_JSON: '{
             "spring.datasource.url"  : "jdbc:mysql://mysqldb:3306/$MYSQLDB_DATABASE?useSSL=false",
             "spring.datasource.username" : "$MYSQLDB_USER",
             "spring.datasource.password" : "$MYSQLDB_ROOT_PASSWORD",
             "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
-            "spring.jpa.hibernate.ddl-auto" : "update"
+            "spring.jpa.hibernate.ddl-auto" : "update",
+            "server.servlet.context-path": "/customer",
+            "springdoc.api-docs.enabled" : true 
           }'
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.carlease-customer-api.rule=Host(`localhost`) && PathPrefix(`/api/customers`)"
-      - "traefik.http.services.carlease-customer-api.loadbalancer.server.port=8080"
-      - "traefik.http.routers.carlease-customer-api.entrypoints=web"
+      - "traefik.http.routers.carlease-customer-service.rule=Host(`localhost`) && PathPrefix(`/customer`)"
+      - "traefik.http.services.carlease-customer-service.loadbalancer.server.port=8080"
+      - "traefik.http.routers.carlease-customer-service.entrypoints=web"
 
 volumes:
   db:
