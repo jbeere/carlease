@@ -6,9 +6,9 @@ import com.carlease.customer.service.validation.CustomerValidator;
 import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Service;
 
-@Component
+@Service
 public class CustomerServiceImpl implements CustomerService {
 
   @Autowired
@@ -52,6 +52,11 @@ public class CustomerServiceImpl implements CustomerService {
   @Override
   public void delete(long customerId) {
     repo.deleteById(customerId);
+  }
+
+  @Override
+  public Iterable<Customer> getAll() {
+    return repo.findAll();
   }
 
   private Customer validateOrThrow(Customer customer) {

@@ -30,7 +30,7 @@ public class CustomerControllerTest {
   @Test
   public void testCreateAndGetCustomer() throws Exception {
     long random = (long) Math.floor(Math.random() * 1000);
-    Customer customer = new Customer(random);
+    Customer customer = Customer.builder().id(random).build();
     when(repo.save(any(Customer.class))).thenReturn(customer);
     when(repo.findById(random)).thenReturn(Optional.of(customer));
     this.mockMvc.perform(

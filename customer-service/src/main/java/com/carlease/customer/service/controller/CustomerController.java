@@ -3,6 +3,8 @@ package com.carlease.customer.service.controller;
 import com.carlease.customer.service.model.Customer;
 import com.carlease.customer.service.CustomerService;
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -27,6 +29,14 @@ public class CustomerController {
 
   @Autowired
   CustomerService service;
+
+  @GetMapping("/")
+  @ResponseStatus(HttpStatus.OK)
+  public List<Customer> findAll() {
+    List<Customer> customers = new ArrayList<>();
+    service.getAll().forEach(customers::add);
+    return customers;
+  }
 
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)

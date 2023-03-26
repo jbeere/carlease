@@ -13,4 +13,6 @@ public interface CustomerService {
 
   void delete(long customerId);
 
+  Iterable<Customer> getAll();
+
 }
