@@ -10,11 +10,17 @@
     <relativePath/> <!-- lookup parent from repository -->
   </parent>
   <groupId>com.carlease</groupId>
-  <artifactId>customer-service</artifactId>
+  <artifactId>car-service-server</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  <name>customer-service</name>
-  <description>The RESTful web api for managing customers</description>
+  <name>car-service-server</name>
+  <description>car-service-server</description>
   <dependencies>
+
+    <dependency>
+      <groupId>com.carlease</groupId>
+      <artifactId>car-service-shared</artifactId>
+      <version>0.0.1-SNAPSHOT</version>
+    </dependency>
 
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -33,15 +39,17 @@
     </dependency>
 
     <dependency>
-      <groupId>mysql</groupId>
-      <artifactId>mysql-connector-java</artifactId>
+      <groupId>com.mysql</groupId>
+      <artifactId>mysql-connector-j</artifactId>
       <version>8.0.32</version>
+      <scope>runtime</scope>
     </dependency>
 
     <dependency>
       <groupId>org.projectlombok</groupId>
       <artifactId>lombok</artifactId>
       <version>1.18.26</version>
+      <optional>true</optional>
     </dependency>
 
     <dependency>
@@ -58,6 +66,14 @@
         <groupId>org.springframework.boot</groupId>
         <artifactId>spring-boot-maven-plugin</artifactId>
         <version>2.7.10</version>
+        <configuration>
+          <excludes>
+            <exclude>
+              <groupId>org.projectlombok</groupId>
+              <artifactId>lombok</artifactId>
+            </exclude>
+          </excludes>
+        </configuration>
       </plugin>
     </plugins>
   </build>

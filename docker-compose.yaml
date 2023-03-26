@@ -54,7 +54,7 @@ services:
 
   carlease-car-service:
     build:
-      context: ./car-service
+      context: ./car-service/car-service-server
     depends_on:
       - mysqldb
     restart: always
@@ -69,7 +69,8 @@ services:
               "spring.jpa.properties.hibernate.dialect" : "org.hibernate.dialect.MySQL5InnoDBDialect",
               "spring.jpa.hibernate.ddl-auto" : "update",
               "server.servlet.context-path": "/car",
-              "springdoc.api-docs.enabled" : true 
+              "springdoc.api-docs.enabled" : true,
+              "spring.jpa.show-sql": true
             }'
     labels:
       - "traefik.enable=true"

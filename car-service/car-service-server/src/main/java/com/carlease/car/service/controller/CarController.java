@@ -1,10 +1,8 @@
 package com.carlease.car.service.controller;
 
-import com.carlease.car.service.model.Car;
 import com.carlease.car.service.CarService;
+import com.carlease.car.service.dto.CarDTO;
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
@@ -17,6 +15,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
@@ -32,17 +31,16 @@ public class CarController {
 
   @GetMapping("/")
   @ResponseStatus(HttpStatus.OK)
-  public List<Car> findAll() {
-    List<Car> cars = new ArrayList<>();
-    service.getAll().forEach(cars::add);
-    return cars;
+  public Iterable<CarDTO> findAll(@RequestParam(name = "make", required = false) final String make,
+      @RequestParam(name = "model", required = false) final String model) {
+    return service.findByMakeAndModel(make, model);
   }
 
   @PostMapping("/")
   @ResponseStatus(HttpStatus.CREATED)
-  public ResponseEntity<Car> create(@RequestBody final Car input,
+  public ResponseEntity<CarDTO> create(@RequestBody final CarDTO input,
       HttpServletRequest request) {
-    Car created = service.create(input);
+    CarDTO created = service.create(input);
     Long id = created.getId();
     UriComponentsBuilder uri = ServletUriComponentsBuilder.fromRequest(request);
     URI location = uri.path("/{id}").buildAndExpand(String.valueOf(id)).toUri();
@@ -51,14 +49,14 @@ public class CarController {
 
   @GetMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<Car> findById(@PathVariable final long id) {
+  public ResponseEntity<CarDTO> findById(@PathVariable final long id) {
     return ResponseEntity.of(service.findById(id));
   }
 
   @PutMapping("/{id}")
   @ResponseStatus(HttpStatus.OK)
-  public ResponseEntity<Car> update(@PathVariable final long id,
-      @RequestBody final Car input) {
+  public ResponseEntity<CarDTO> update(@PathVariable final long id,
+      @RequestBody final CarDTO input) {
     if (id != input.getId()) {
       return ResponseEntity.badRequest().build();
     }

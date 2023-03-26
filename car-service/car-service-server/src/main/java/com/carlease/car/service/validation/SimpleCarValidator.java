@@ -1,6 +1,6 @@
 package com.carlease.car.service.validation;
 
-import com.carlease.car.service.model.Car;
+import com.carlease.car.service.dto.CarDTO;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 public class SimpleCarValidator implements CarValidator {
 
   @Override
-  public List<String> validate(Car car) {
+  public List<String> validate(CarDTO car) {
     List<String> errors = new ArrayList<>();
     if (Objects.equals(car.getMake(), "")) {
       errors.add("car make cannot be null or empty");
