@@ -4,6 +4,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import lombok.Builder;
 
+/**
+ *  Calculates the Lease Rate
+ *
+ * Is implemented as a builder, for easier and more scalable construction of this calculation.
+ */
 @Builder
 public class LeaseRateCalculator {
 
@@ -23,7 +28,14 @@ public class LeaseRateCalculator {
   @Builder.Default
   private int scale = 8;
 
-  // ((( mileage / 12 )*duration )/Nett price) + ((( Interest rate / 100 ) * Nett price) / 12)
+  /**
+   * This fulfills the requirement
+   *
+   * ((( mileage / 12 )*duration )/Nett price) + ((( Interest rate / 100 ) * Nett price) / 12)
+   *
+   * @return The calculated Lease Rate
+   */
+  //
   public BigDecimal calculate() {
     // ( mileage / 12 )
     BigDecimal a = mileage.setScale(scale, roundingMode).divide(twelve,roundingMode);
