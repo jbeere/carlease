@@ -1,6 +1,7 @@
 package com.carlease.lease.service;
 
 import com.carlease.car.service.dto.CarDTO;
+import com.carlease.lease.service.calc.LeaseRateCalculator;
 import com.carlease.lease.service.client.CarServiceClient;
 import com.carlease.lease.service.dto.LeaseCalculationRequest;
 import com.carlease.lease.service.dto.LeaseCalculationResponse;
@@ -23,19 +24,18 @@ public class LeaseServiceImpl implements LeaseService {
     BigDecimal nettPrice = car.map(CarDTO::getNettPrice)
         .orElseThrow(() -> new IllegalArgumentException(
             String.format("Make %s Model %s Not Found", make, model)));
-    BigDecimal twelve = new BigDecimal(12);
-    BigDecimal hundred = new BigDecimal(100);
-    BigDecimal mileage = request.getMileage();
-    BigDecimal duration = BigDecimal.valueOf(request.getDuration());
-    BigDecimal interestRate = request.getInterestRate();
-    //((( mileage / 12 )*duration )/Nett price) + ((( Interest rate / 100 ) * Nett price) / 12)
-    BigDecimal answer =
-        (((mileage.divide(twelve, RoundingMode.HALF_UP))
-            .multiply(duration)).divide(nettPrice, RoundingMode.HALF_UP))
-            .add(((interestRate.divide(hundred, RoundingMode.HALF_UP))
-                .multiply(nettPrice)).divide(twelve, RoundingMode.HALF_UP));
-    return LeaseCalculationResponse.builder().duration(request.getDuration())
-        .mileage(request.getMileage()).nettPrice(nettPrice)
-        .interestRate(request.getInterestRate()).leaseRate(answer).build();
+    BigDecimal answer = LeaseRateCalculator.builder()
+        .duration(request.getDuration())
+        .interestRate(request.getInterestRate())
+        .mileage(request.getMileage())
+        .nettPrice(nettPrice)
+        .build().calculate();
+    return LeaseCalculationResponse.builder()
+        .duration(request.getDuration())
+        .interestRate(request.getInterestRate())
+        .mileage(request.getMileage())
+        .nettPrice(nettPrice)
+        .leaseRate(answer)
+        .build();
   }
 }
