@@ -25,15 +25,20 @@ public class LeaseRateCalculator {
 
   // ((( mileage / 12 )*duration )/Nett price) + ((( Interest rate / 100 ) * Nett price) / 12)
   public BigDecimal calculate() {
+    // ( mileage / 12 )
     BigDecimal a = mileage.setScale(scale, roundingMode).divide(twelve,roundingMode);
+    // ( mileage / 12 ) * duration
     BigDecimal b = a.multiply(BigDecimal.valueOf(duration));
+    // (( mileage / 12 ) * duration) / nettPrice
     BigDecimal c = b.divide(nettPrice, roundingMode);
     // +
+    // (interestRate * nettPrice)
     BigDecimal d = interestRate.multiply(nettPrice);
+    // (interestRate * nettPrice) / 12
     BigDecimal e = d.divide(twelve, roundingMode);
     // =
     return c.add(e);
-  }
 
-  //239.82142857
+    // I could not get it to be exactly 239.76, perhaps I am missing something?
+  }
 }
