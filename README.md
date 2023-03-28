@@ -14,6 +14,12 @@ In the root of this project, execute
 
 `mvn clean package`
 
+### Env
+
+Copy `./.env.example` into `./.env`
+
+You can change the password if you wish, but not necessary.
+
 ### Run
 
 In the root of this project, execute
