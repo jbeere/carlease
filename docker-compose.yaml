@@ -1,4 +1,3 @@
-version: '3.3'
 services:
 #  traefik:
 #    image: traefik:v2.9
@@ -171,8 +170,8 @@ services:
     environment:
       - KEYCLOAK_ADMIN=$KEYCLOAK_ADMIN
       - KEYCLOAK_ADMIN_PASSWORD=$KEYCLOAK_ADMIN_PASSWORD
-      #      - KC_HOSTNAME_URL=http://keycloak-server:8080
-      - KC_HOSTNAME_URL=http://localhost:3000
+      - KC_HOSTNAME_URL=http://keycloak-server:8080
+#      - KC_HOSTNAME_URL=http://localhost:3000
       - KC_HEALTH_ENABLED=true
     volumes:
       - ./scripts/keycloak:/opt/keycloak/data/import
@@ -180,6 +179,14 @@ services:
 #    command: export --dir /data/import --realm carlease-realm --users realm_file
     command: start-dev --import-realm
 #    command: start-dev
+    healthcheck:
+      # keycloak 21.0 does not have curl or wget installed, need to get creative with the healthcheck...
+      # call http://localhost:8080/health/ready directly with TCP and check if "UP" is in the response
+      test: ["CMD-SHELL", "exec 5<>/dev/tcp/localhost/8080 && echo -e \"GET /health/ready HTTP/1.0\n\" >&5 && cat <&5 | grep \"UP\" | wc -l | (read -n1; if [ $REPLY = \"0\" ]; then exit 1; else exit 0; fi)"]
+      interval: 5s
+      retries: 60
+      start_period: 30s
+      timeout: 5s
 
 volumes:
   db:
