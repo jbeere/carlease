@@ -3,6 +3,11 @@ package com.carlease.lease.service.controller;
 import com.carlease.lease.service.LeaseService;
 import com.carlease.lease.service.dto.LeaseCalculationRequest;
 import com.carlease.lease.service.dto.LeaseCalculationResponse;
+import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.info.Info;
+import javax.validation.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,8 +25,10 @@ public class LeaseController {
   private LeaseService service;
 
   @PostMapping("/car/{make}/{model}/rate")
+  @Operation(summary = "Calculates the lease rate for a vehicle by make and model")
   public LeaseCalculationResponse calculateLeaseRate(
-      @PathVariable final String make, @PathVariable final String model,
+      @PathVariable @NotBlank @Parameter(description = "The make of the vehicle - e.g. BMW") final String make,
+      @NotBlank @PathVariable @Parameter(description = "The model of the vehicle - e.g. XM") final String model,
       @RequestBody LeaseCalculationRequest request) {
     return service.calculate(make, model, request);
   }

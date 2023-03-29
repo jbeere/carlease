@@ -6,7 +6,6 @@ import com.carlease.lease.service.client.CarServiceClient;
 import com.carlease.lease.service.dto.LeaseCalculationRequest;
 import com.carlease.lease.service.dto.LeaseCalculationResponse;
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

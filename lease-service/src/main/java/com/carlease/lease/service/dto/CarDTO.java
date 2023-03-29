@@ -7,6 +7,11 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+/**
+ * Represents a Car in the carlease rest api
+ *
+ * // todo this should have been in /car-service/car-service-client and imported as a dependency
+ */
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
