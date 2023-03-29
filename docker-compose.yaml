@@ -1,3 +1,4 @@
+version: '3.9'
 services:
 #  traefik:
 #    image: traefik:v2.9
@@ -27,12 +28,19 @@ services:
                 "eureka.client.fetch-registry":false,
                 "server.port":8761
               }'
+    healthcheck:
+      test: ["CMD-SHELL", "curl -f --silent http://localhost:8761 2>&1 | grep \"status\" | grep \"UP\" | wc -l | (read -n1; if [ $$REPLY = \"0\" ]; then exit 1; else exit 0; fi)"]
+      interval: 5s
+      retries: 60
+      start_period: 30s
+      timeout: 5s
 
   api-gateway:
     build:
       context: ./api-gateway
     depends_on:
-      - eureka
+      eureka:
+        condition: service_healthy
     container_name: api-gateway
     hostname: api-gateway
     ports:
@@ -68,13 +76,19 @@ services:
       - "3306:3306"
     volumes:
       - db:/var/lib/mysql
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 20s
+      retries: 10
 
   carlease-customer-service:
     build:
       context: ./customer-service
     depends_on:
-      - mysqldb
-      - eureka
+      mysqldb:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
     restart: always
     container_name: carlease-customer-service
 #    hostname: 'customer-service'
@@ -104,8 +118,10 @@ services:
     build:
       context: ./car-service/car-service-server
     depends_on:
-      - mysqldb
-      - eureka
+      mysqldb:
+        condition: service_healthy
+      eureka:
+        condition: service_healthy
     restart: always
     container_name: carlease-car-service
 #    hostname: 'car-service'
@@ -136,9 +152,8 @@ services:
     build:
       context: ./lease-service
     depends_on:
-      - carlease-car-service
-      - mysqldb
-      - eureka
+      eureka:
+        condition: service_healthy
     restart: always
     container_name: carlease-lease-service
 #    hostname: 'lease-service'
@@ -182,7 +197,7 @@ services:
     healthcheck:
       # keycloak 21.0 does not have curl or wget installed, need to get creative with the healthcheck...
       # call http://localhost:8080/health/ready directly with TCP and check if "UP" is in the response
-      test: ["CMD-SHELL", "exec 5<>/dev/tcp/localhost/8080 && echo -e \"GET /health/ready HTTP/1.0\n\" >&5 && cat <&5 | grep \"UP\" | wc -l | (read -n1; if [ $REPLY = \"0\" ]; then exit 1; else exit 0; fi)"]
+      test: ["CMD-SHELL", "exec 5<>/dev/tcp/localhost/8080 && echo -e \"GET /health/ready HTTP/1.0\n\" >&5 && cat <&5 | grep \"UP\" | wc -l | (read -n1; if [ $$REPLY = \"0\" ]; then exit 1; else exit 0; fi)"]
       interval: 5s
       retries: 60
       start_period: 30s
